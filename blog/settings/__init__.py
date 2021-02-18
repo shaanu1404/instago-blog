@@ -1,9 +1,6 @@
-
 # If environment is local.
-
-from .local import *
+# from .local import *
 
 
 # If in production.
-
-# from .prod import *
+from .prod import *
