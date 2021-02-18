@@ -1,0 +1,66 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+InstaGo | Login
+{% endblock %}
+
+{% block account %}
+
+<main class="accounts-main">
+    <div class="h-100 row">
+        <div class="col-5 offset-1 p-5 text-white">
+            <h3 class="text-uppercase">Welcome to </h3>
+            <strong class="display-1 text-primary">InstaGo</strong>
+            <p>Best learnings around the world at one place.</p>
+            <a href="/" class="btn btn-outline-light btn-lg mt-4">Search the greatest ideas of all time</a>
+        </div>
+        <div class="h-100 col-4 p-5 bg-light">
+            <h1 class="">Login</h1>
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                    {{ form.username }}
+
+                    {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                    <small class="form-text text-danger">
+                        {{ error }}
+                    </small>
+                    {% endfor %}
+                    {% else %}
+
+                    {% if form.username.help_text %}
+                    <small class="form-text text-muted">
+                        {{ form.username.help_text }}
+                    </small>
+                    {% endif %}
+
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                    {{ form.password }}
+
+                    {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                    <small class="form-text text-danger">
+                        {{ error }}
+                    </small>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <p>
+                    <a href="">Forgot password?</a>
+                </p>
+                <button class="btn btn-dark btn-block">Login</button>
+                <p>
+                    Not a member? <a href="{% url 'user-register' %}">Register here.</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  {% include 'partials/css.html' %}
+
+  {% block extrastyles %}{% endblock %}
+
+  <title>{% block title %}InstaGo{% endblock %}</title>
+</head>
+
+<body>
+
+  {% include 'partials/messages.html' %}
+
+  {% block account %}
+
+  {% endblock %}
+
+  <!-- javascript -->
+  {% include 'partials/js.html' %}
+
+  <!-- extrajs -->
+  {% block javascript %}{% endblock %}
+</body>
+
+</html>

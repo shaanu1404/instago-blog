@@ -1,0 +1,39 @@
+<div class="card card-body mb-2">
+    {% include 'partials/user_profile_title.html' with blog=blog %}
+    <hr>
+    <h2 class="text-capitalize">
+        <a href="{{ blog.get_absolute_url }}" class="text-dark">{{ blog.title }}</a>
+    </h2>
+    <p>{{ blog.body | truncatewords:15 }}</p>
+    <div class="mt-2">
+        <a href="#" class="like-btn text-dark mr-3" data-slug={{ blog.slug }}>
+            {% if blog in request.user.userprofile.liked_posts.all %}
+            <i class="fas fa-heart text-danger"></i> {{ blog.likes }} Like{{ blog.likes | pluralize }}
+            {% else %}
+            <i class="far fa-heart"></i> {{ blog.likes }} Like{{ blog.likes | pluralize }}
+            {% endif %}
+        </a>
+        <span class="mr-3"><i class="fas fa-eye"></i> {{ blog.views }}</span>
+        <span class="mr-3"><i class="fas fa-comment-dots"></i> {{ blog.reply_set.count }}</span>
+        <span class="mr-3"><i class="far fa-clock"></i> {{ blog.timestamp }}</span>
+    </div>
+    {% if request.user.is_authenticated and blog.user == request.user and 'accounts/user-profile' in request.path %}
+    <hr />
+    <div class="text-right">
+        <a href="{% url 'add-tag' blog.slug %}" class="btn btn-light text-primary btn-sm text-decoration-none">
+            <i class="fas fa-tags"></i> Add tags
+        </a>
+        <a href="{% url 'edit' blog.slug %}" class="btn btn-light text-primary btn-sm text-decoration-none">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <button type="button" class="btn btn-light text-danger btn-sm text-decoration-none"
+          data-toggle="modal"
+          data-target="#staticBackdrop-{{ blog.id }}">
+            <i class="far fa-trash-alt"></i> Remove
+        </button>
+    </div>
+
+    {% include 'partials/modal.html' with blog=blog %}
+
+    {% endif %}
+</div>

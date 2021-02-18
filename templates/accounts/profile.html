@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InstaGo | {{ object.get_full_name | title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="cover mb-5" style="  box-shadow: 0 8px 12px rgba(5, 5, 5, .15);">
+    <div class="container d-flex align-items-start">
+        <img src="{{ user.userprofile.get_profile_image_url }}" alt="" class="cover-profile-image" />
+        <h1 class="ml-5">{{ user.get_full_name | title }}</h1>
+
+        {% if request.user == user %}
+        <a href="{% url 'user-profile-edit' %}" class="btn btn-success ml-auto mt-2"><i class="fas fa-edit"></i> Edit
+            profile</a>
+        {% endif %}
+
+        {% include 'partials/user_follow_buttons.html' with user=user page_redirect=user.userprofile.get_absolute_url %}
+    </div>
+</div>
+
+<div class="container">
+    {% if user.userprofile.bio or request.user == user %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h4 class="mb-2">About Me</h4>
+            <hr>
+            {% if user.userprofile.bio %}
+            <div>
+                <p>
+                    {{ user.userprofile.bio }}
+                </p>
+                {% if request.user.is_authenticated and request.user == user %}
+                <button class="btn btn-link btn-sm" data-toggle="modal" data-target="#editAbout">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                {% endif %}
+            </div>
+            {% else %}
+            {% if request.user.is_authenticated and request.user == user %}
+            <div>
+                <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#editAbout">
+                    <i class="fas fa-plus"></i> Add your bio
+                </button>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <!-- modal -->
+    <div class="modal fade" id="editAbout" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="editAboutLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAboutLabel">Edit your bio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'edit-bio' %}" method="POST">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <textarea name="bio" id="bio" rows="3"
+                            class="form-control">{% if user.userprofile.bio %}{{ user.userprofile.bio }}{% endif %}</textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save.</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div class="row">
+        <div class="col-9">
+            <h4 class="mb-2">My Writings</h4>
+            <hr>
+            {# comment:for blog in user.blogpost_set.all #}
+            {% for blog in blogs %}
+
+            {% include 'partials/blog_card.html' with blog=blog %}
+
+            {% empty %}
+
+            <p>
+                {% if request.user.is_authenticated and request.user == user %}You{% else %}{{ user.get_full_name | title }}{% endif %}
+                didn't posted anything.
+            </p>
+
+            {% if request.user.is_authenticated and request.user == user %}
+            <a href="{% url 'create-blog' %}" class="btn btn-success">
+                <i class="fas fa-pencil-alt"></i> Write your first blog.
+            </a>
+            {% endif %}
+
+            {% endfor %}
+
+            {% include 'partials/blog_paginator.html' with blogs=blogs %}
+
+        </div>
+        <div class="col-3">
+            <h4 class="mb-2">Friends</h4>
+            <hr>
+            <ul class="list-group bg-dark">
+                {% for userprofile in user.userprofile.get_all_followings %}
+
+                <li class="list-group-item list-group-item-action">
+
+                    {% if request.user.userprofile == userprofile %}
+
+                    <a href="{% url 'user-profile' userprofile.user.username %}" class="text-decoration-none text-dark">
+                        <img src="{{ userprofile.get_profile_image_url }}" alt="avatar"
+                            style="height: 30px; width: 30px; border-radius: 10em; object-fit: cover;">
+                        <span class="ml-3">You</span>
+                    </a>
+
+                    {% else %}
+
+                    <a href="{% url 'user-profile' userprofile.user.username %}" class="text-decoration-none text-dark">
+                        <img src="{{ userprofile.get_profile_image_url }}" alt="avatar"
+                            style="height: 30px; width: 30px; border-radius: 10em; object-fit: cover;">
+                        <span class="ml-3">
+                            {{ userprofile.user.get_full_name | title }}
+                        </span>
+                    </a>
+
+                    {% endif %}
+                </li>
+
+                {% empty %}
+                <li class="list-group-item">Sorry, you didn't made any friend yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

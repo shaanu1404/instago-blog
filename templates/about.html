@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InstaGo | About InstaGo
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-8">
+            <h4>InstaGo</h4>
+            <hr>
+            <p>
+                InstaGo is just a simple developer blogging site made with Django - The python web framework.
+                Here you can write blogs in a very simple way, with a WYSIWYG editor, authentication facility, searching
+                blogs and people, etc..
+                You can comment and like posts that you love and make friends.
+            </p>
+            <h5>
+                So, Happy Blogging 😄😄😄!!!
+            </h5>
+            {% if request.user.is_staff %}
+            <small class="text-muted">And also, you can go to the admin panel with "[hostname]/admin" url.</small>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

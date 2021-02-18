@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}InstaGo | All Blogs{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    {% if request.GET.q %}
+    <div class="row">
+        <div class="col-8 mx-auto mb-2">
+            <span class="text-muted">{{ blogs.paginator.count }} results for {{ request.GET.q }}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for blog in blogs %}
+    <div class="row" id="blog-{{ blog.id }}">
+        <div class="col-8 mx-auto">
+            {% include 'partials/blog_card.html' with blog=blog %}
+        </div>
+    </div>
+    {% empty %}
+    <h4 class="text-center">No blogs till now.</h4>
+    {% endfor %}
+
+    {% include 'partials/blog_paginator.html' with blogs=blogs %}
+
+</div>
+
+{% endblock %}

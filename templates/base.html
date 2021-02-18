@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  {% include 'partials/css.html' %}
+
+  {% block extrastyles %}{% endblock %}
+
+  <title>{% block title %}InstaGo{% endblock %}</title>
+</head>
+
+<body>
+  {% include 'partials/messages.html' %}
+
+  {% include 'partials/header.html' %}
+
+  <main class="page-content">
+    {% block content %} {% endblock %}
+  </main>
+
+  <!-- footer -->
+  {% include 'partials/footer.html' %}
+
+  <!-- javascript -->
+  {% include 'partials/js.html' %}
+
+  <!-- extrajs -->
+  {% block javascript %}{% endblock %}
+
+</body>
+
+</html>

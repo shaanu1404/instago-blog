@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InstaGo | Search people
+{% endblock %}
+
+{% block extrastyles %}
+
+<style>
+  .people-link{
+    border-radius: 4px;
+  }
+  .people-link:hover{
+    background: rgba(0, 0, 0, 0.05);
+  }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col d-flex justify-content-between align-items-center">
+            <h3 class="d-inline-block">Our members</h3>
+            <form class="form-inline my-2 my-lg-0" action="" method="GET">
+                <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search users" aria-label="Search">
+                <button class="btn btn-success my-2 my-sm-0" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    {% for user in object_list %}
+    <div class="row mb-2">
+        <div class="col mx-auto">
+            <a href="{{ user.userprofile.get_absolute_url }}" class="text-decoration-none text-dark">
+                <div class="people-link d-flex justify-content-between align-items-center py-3 px-4">
+                    <div>
+                        <img src="{{ user.userprofile.get_profile_image_url }}" alt="avatar"
+                            style="height: 30px; width: 30px; border-radius: 10em; object-fit: cover;">
+                        <h5 class="d-inline-block ml-3 font-weight-normal">{{ user.get_full_name | title }}</h5>
+                        <span class="text-muted ml-3">@{{ user.username }}</span>
+                    </div>
+                    <small class="d-inline-block text-muted">Joined on {{ user.date_joined }}</small>
+                    <div>
+                        {% include 'partials/user_follow_buttons.html' with user=user page_redirect='/accounts/people/search/' %}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <h4 class="text-center">No users till now.</h4>
+    {% endfor %}
+</div>
+
+{% endblock %}

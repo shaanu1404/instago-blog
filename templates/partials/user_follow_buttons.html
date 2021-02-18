@@ -1,0 +1,39 @@
+{% if user != request.user and request.user.is_authenticated %}
+
+{% if user.userprofile not in request.user.userprofile.get_all_followings %}
+
+<form class="ml-auto mt-2 d-flex justify-content-between align-items-center" action="{% url 'follow' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="userid" value="{{ user.id }}">
+    {% if page_redirect %}
+    <input type="hidden" name="pageredirect" value="{{ page_redirect }}">
+    {% endif %}
+
+    {% if blog_id %}
+    <input type="hidden" name="blogid" value="{{ blog_id }}">
+    <input type="hidden" name="page" value="{{ request.GET.page }}">
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary {% if 'user-profile' not in request.path %}btn-sm{% endif %}">Follow</button>
+</form>
+
+{% else %}
+
+<form class="ml-auto mt-2 d-flex justify-content-between align-items-center" action="{% url 'unfollow' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="userid" value="{{ user.id }}">
+    {% if page_redirect %}
+    <input type="hidden" name="pageredirect" value="{{ page_redirect }}">
+    {% endif %}
+
+    {% if blog_id %}
+    <input type="hidden" name="blogid" value="{{ blog_id }}">
+    <input type="hidden" name="page" value="{{ request.GET.page }}">
+    {% endif %}
+
+    <button type="submit" class="btn btn-light {% if 'user-profile' not in request.path %}btn-outline-dark btn-sm{% endif %}">Unfollow</button>
+</form>
+
+{% endif %}
+
+{% endif %}
