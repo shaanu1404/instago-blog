@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import dj_database_url
 from django.contrib.messages import constants as messages
 import os
 
@@ -103,6 +104,12 @@ DATABASES = {
     }
 }
 
+
+DATABASES['default'] = dj_database_url.config(
+    default='postgres://owhxangmrdtmjb:b5e99c58f846ac3145b8607bb6b910dc3be3b6a6d1bd0db2711934c8d90946fe@ec2-34-198-31-223.compute-1.amazonaws.com:5432/d7qhcer8dhq0vn',
+    conn_max_age=600,
+    ssl_require=True,
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
