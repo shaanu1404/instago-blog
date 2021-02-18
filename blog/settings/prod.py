@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(
 SECRET_KEY = 'v^$4sp@9=c_#0&#-9cv#t1i7^fxr6yxks4wvqoasj)fu%r9wuz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["django-instago-app.herokuapp.com"]
 
